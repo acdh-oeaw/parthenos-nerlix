@@ -1,0 +1,496 @@
+14/03/2017 15:49:08 DEBUG main AnalysisLogger - DynamicTransducerFactory: Getting the following Agent:STANBOL_ALGORITHM From the list of N Transducers: 0
+14/03/2017 15:49:08 DEBUG main AnalysisLogger - StanbolAlgorthm process initialized
+14/03/2017 15:49:08 DEBUG Thread-0 AnalysisLogger - Processing input: The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley
+14/03/2017 15:49:08 DEBUG Thread-0 AnalysisLogger - Result: {
+  "@context": {
+    "dbp-ont": "http://dbpedia.org/ontology/",
+    "dbp-ont:birthDate": {
+      "@type": "xsd:dateTime"
+    },
+    "dbp-ont:populationTotal": {
+      "@type": "xsd:long"
+    },
+    "dc": "http://purl.org/dc/terms/",
+    "dc:created": {
+      "@type": "xsd:dateTime"
+    },
+    "dc:creator": {
+      "@type": "xsd:string"
+    },
+    "dc:relation": {
+      "@type": "@id"
+    },
+    "dc:type": {
+      "@type": "@id"
+    },
+    "enhancer": "http://fise.iks-project.eu/ontology/",
+    "enhancer:confidence": {
+      "@type": "xsd:double"
+    },
+    "enhancer:end": {
+      "@type": "xsd:int"
+    },
+    "enhancer:entity-reference": {
+      "@type": "@id"
+    },
+    "enhancer:entity-type": {
+      "@type": "@id"
+    },
+    "enhancer:extracted-from": {
+      "@type": "@id"
+    },
+    "enhancer:start": {
+      "@type": "xsd:int"
+    },
+    "entityhub": "http://stanbol.apache.org/ontology/entityhub/entityhub#",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "foaf:depiction": {
+      "@type": "@id"
+    },
+    "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+    "geo:lat": {
+      "@type": "xsd:double"
+    },
+    "geo:long": {
+      "@type": "xsd:double"
+    },
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "http://dbpedia.org/resource/Bob_Marley",
+      "@type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Artist",
+        "dbp-ont:MusicalArtist",
+        "dbp-ont:Person",
+        "foaf:Person",
+        "owl:Thing",
+        "schema:MusicGroup",
+        "schema:Person"
+      ],
+      "dbp-ont:birthDate": "1945-02-05T23:00:00Z",
+      "foaf:depiction": [
+        "http://upload.wikimedia.org/wikipedia/commons/5/5e/Bob-Marley.jpg",
+        "http://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bob-Marley.jpg/200px-Bob-Marley.jpg"
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Robert Nesta \"Bob\" Marley, OM (6 February 1945 – 11 May 1981) was a Jamaican singer-songwriter and musician. He was the rhythm guitarist and lead singer for the ska, rocksteady and reggae band Bob Marley & The Wailers (1963–1981). Marley remains the most widely known and revered performer of reggae music, and is credited with helping spread both Jamaican music and the Rastafari movement to a worldwide audience."
+      },
+      "rdfs:label": [
+        {
+          "@language": "de",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "en",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "es",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "fr",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "it",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "pt",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "tr",
+          "@value": "Bob Marley"
+        },
+        {
+          "@language": "ru",
+          "@value": "?????, ???"
+        },
+        {
+          "@language": "he",
+          "@value": "??? ?????"
+        },
+        {
+          "@language": "ar",
+          "@value": "??? ?????"
+        },
+        {
+          "@language": "zh",
+          "@value": "??·??"
+        }
+      ]
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Paris",
+      "@type": [
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "dbp-ont:Settlement",
+        "http://www.opengis.net/gml/_Feature",
+        "owl:Thing",
+        "schema:Place"
+      ],
+      "dbp-ont:populationTotal": 2211297,
+      "foaf:depiction": [
+        "http://upload.wikimedia.org/wikipedia/commons/6/6e/Paris_-_Eiffelturm_und_Marsfeld2.jpg",
+        "http://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Paris_-_Eiffelturm_und_Marsfeld2.jpg/200px-Paris_-_Eiffelturm_und_Marsfeld2.jpg"
+      ],
+      "geo:lat": 48.8567,
+      "geo:long": 2.3508,
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Paris is the capital and largest city of France. It is situated on the river Seine, in northern France, at the heart of the Île-de-France region (or Paris Region, French: Région parisienne). As of January 2008 the city of Paris, within its administrative limits largely unchanged since 1860, has an estimated population of 2,211,297 and a metropolitan population of 12,089,098, and is one of the most populated metropolitan areas in Europe."
+      },
+      "rdfs:label": [
+        {
+          "@language": "it",
+          "@value": "Parigi"
+        },
+        {
+          "@language": "de",
+          "@value": "Paris"
+        },
+        {
+          "@language": "en",
+          "@value": "Paris"
+        },
+        {
+          "@language": "fr",
+          "@value": "Paris"
+        },
+        {
+          "@language": "pt",
+          "@value": "Paris"
+        },
+        {
+          "@language": "tr",
+          "@value": "Paris"
+        },
+        {
+          "@language": "es",
+          "@value": "París"
+        },
+        {
+          "@language": "ru",
+          "@value": "?????"
+        },
+        {
+          "@language": "he",
+          "@value": "????"
+        },
+        {
+          "@language": "ar",
+          "@value": "?????"
+        },
+        {
+          "@language": "zh",
+          "@value": "??"
+        }
+      ]
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Paris_Commune",
+      "@type": [
+        "dbp-ont:Country",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "owl:Thing",
+        "schema:Country",
+        "schema:Place"
+      ],
+      "foaf:depiction": [
+        "http://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg",
+        "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/200px-Flag_of_France.svg.png"
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The Paris Commune or Fourth French Revolution was a government that briefly ruled Paris from March 18 (more formally, from March 28) to May 28, 1871. It existed before the split between anarchists and Marxists had taken place, and it is hailed by both groups as the first assumption of power by the working class during the Industrial Revolution. Debates over the policies and outcome of the Commune contributed to the break between those two political groups."
+      },
+      "rdfs:label": [
+        {
+          "@language": "fr",
+          "@value": "Commune de Paris (1871)"
+        },
+        {
+          "@language": "pt",
+          "@value": "Comuna de Paris"
+        },
+        {
+          "@language": "es",
+          "@value": "Comuna de París"
+        },
+        {
+          "@language": "it",
+          "@value": "Comune di Parigi (1871)"
+        },
+        {
+          "@language": "en",
+          "@value": "Paris Commune"
+        },
+        {
+          "@language": "tr",
+          "@value": "Paris Komünü"
+        },
+        {
+          "@language": "de",
+          "@value": "Pariser Kommune"
+        },
+        {
+          "@language": "ru",
+          "@value": "????????? ???????"
+        },
+        {
+          "@language": "he",
+          "@value": "??????? ????????"
+        },
+        {
+          "@language": "ar",
+          "@value": "?????? ?????"
+        },
+        {
+          "@language": "zh",
+          "@value": "????"
+        }
+      ]
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Paris_M%C3%A9tro",
+      "@type": [
+        "dbp-ont:ArchitecturalStructure",
+        "dbp-ont:Infrastructure",
+        "dbp-ont:Place",
+        "dbp-ont:PublicTransitSystem",
+        "dbp-ont:RouteOfTransportation",
+        "owl:Thing",
+        "schema:Place"
+      ],
+      "foaf:depiction": [
+        "http://upload.wikimedia.org/wikipedia/commons/6/66/Paris_Metro_Sign.jpg",
+        "http://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Paris_Metro_Sign.jpg/200px-Paris_Metro_Sign.jpg"
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The Paris Métro or Métropolitain (French: Métro de Paris) is the rapid transit metro system in Paris, France. It has become a symbol of the city, noted for its density within the city limits and its uniform architecture influenced by Art Nouveau. The network's sixteen lines are mostly underground and run to 214 km (133 mi) in length. There are 301 stations (384 stops), of which 62 facilitate transfer to another line."
+      },
+      "rdfs:label": [
+        {
+          "@language": "es",
+          "@value": "Metro de París"
+        },
+        {
+          "@language": "it",
+          "@value": "Metropolitana di Parigi"
+        },
+        {
+          "@language": "pt",
+          "@value": "Metropolitano de Paris"
+        },
+        {
+          "@language": "de",
+          "@value": "Métro Paris"
+        },
+        {
+          "@language": "fr",
+          "@value": "Métro de Paris"
+        },
+        {
+          "@language": "en",
+          "@value": "Paris Métro"
+        },
+        {
+          "@language": "tr",
+          "@value": "Paris metrosu"
+        },
+        {
+          "@language": "ru",
+          "@value": "????????? ????????????"
+        },
+        {
+          "@language": "he",
+          "@value": "????? ?????? ?? ????"
+        },
+        {
+          "@language": "ar",
+          "@value": "???? ?????"
+        },
+        {
+          "@language": "zh",
+          "@value": "????"
+        }
+      ]
+    },
+    {
+      "@id": "urn:enhancement-1b1c48ee-7499-27ae-8a62-98601d0e7428",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.893Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.opennlp.impl.NamedEntityExtractionEnhancementEngine",
+      "dc:type": "dbp-ont:Place",
+      "enhancer:confidence": 0.93224037,
+      "enhancer:end": 59,
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Paris"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": "The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley"
+      },
+      "enhancer:start": 54
+    },
+    {
+      "@id": "urn:enhancement-22b00bbf-3bea-2f96-9ae9-5557c3a773b8",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.896Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.entitytagging.impl.NamedEntityTaggingEngine",
+      "dc:relation": "urn:enhancement-ec92e522-2564-04a8-9474-e3eebd435969",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Bob Marley"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Bob_Marley",
+      "enhancer:entity-type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Artist",
+        "dbp-ont:MusicalArtist",
+        "dbp-ont:Person",
+        "schema:MusicGroup",
+        "schema:Person",
+        "owl:Thing",
+        "foaf:Person"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "entityhub:site": "dbpedia"
+    },
+    {
+      "@id": "urn:enhancement-4cf80020-f62a-d9ca-8075-e2eb14cf9734",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.895Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.entitytagging.impl.NamedEntityTaggingEngine",
+      "dc:relation": "urn:enhancement-1b1c48ee-7499-27ae-8a62-98601d0e7428",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Paris"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Paris",
+      "enhancer:entity-type": [
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "dbp-ont:Settlement",
+        "schema:Place",
+        "http://www.opengis.net/gml/_Feature",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "entityhub:site": "dbpedia"
+    },
+    {
+      "@id": "urn:enhancement-6c80f491-15c4-5f30-d75f-9caeda014561",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.887Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+      "dc:language": "en",
+      "dc:type": "dc:LinguisticSystem",
+      "enhancer:confidence": 0.9999964,
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4"
+    },
+    {
+      "@id": "urn:enhancement-98666742-4982-3473-9e4f-73fdacb048f5",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.895Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.entitytagging.impl.NamedEntityTaggingEngine",
+      "dc:relation": "urn:enhancement-1b1c48ee-7499-27ae-8a62-98601d0e7428",
+      "enhancer:confidence": 0.20428352,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Paris Métro"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Paris_M%C3%A9tro",
+      "enhancer:entity-type": [
+        "dbp-ont:ArchitecturalStructure",
+        "dbp-ont:Infrastructure",
+        "dbp-ont:Place",
+        "dbp-ont:PublicTransitSystem",
+        "dbp-ont:RouteOfTransportation",
+        "schema:Place",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "entityhub:site": "dbpedia"
+    },
+    {
+      "@id": "urn:enhancement-a7cd9a94-0b42-e29d-f4e1-0f8b8506ca56",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.896Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.entitytagging.impl.NamedEntityTaggingEngine",
+      "dc:relation": "urn:enhancement-1b1c48ee-7499-27ae-8a62-98601d0e7428",
+      "enhancer:confidence": 0.1493264,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Paris Commune"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Paris_Commune",
+      "enhancer:entity-type": [
+        "dbp-ont:Country",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "schema:Country",
+        "schema:Place",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "entityhub:site": "dbpedia"
+    },
+    {
+      "@id": "urn:enhancement-ec92e522-2564-04a8-9474-e3eebd435969",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2017-03-14T14:49:08.891Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.opennlp.impl.NamedEntityExtractionEnhancementEngine",
+      "dc:type": "dbp-ont:Person",
+      "enhancer:confidence": 0.94938487,
+      "enhancer:end": 89,
+      "enhancer:extracted-from": "urn:content-item-sha1-39cecf9b0cad2e844c51e2c6340c61bde034d5e4",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Bob Marley"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": "The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley"
+      },
+      "enhancer:start": 79
+    }
+  ]
+}
+14/03/2017 15:49:18 DEBUG main AnalysisLogger - StanbolAlgorthm process terminated

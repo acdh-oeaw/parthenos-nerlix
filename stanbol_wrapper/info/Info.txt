@@ -1,0 +1,3 @@
+Algorithm Name: STANBOL_ALGORITHM
+Class Name: at.ac.acdh.enrichment.stanbol.StanbolAlgorthm
+Algorithm Description: Sends input to Apache Stanbol REST API and returns semnanticaly enriched output in json-ld format
