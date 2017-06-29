@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head></h:head>
+<h:body>
+
+	<p:layout>
+		<p:layoutUnit position="north">
+			<p:panel>
+				<p:inputText style="width:90%" />
+				<p:button icon="ui-icon-search" />
+			</p:panel>
+		</p:layoutUnit>
+		<p:layoutUnit position="west">
+			<p:panel>
+            <h:form id="filter">
+				<p:panelGrid columns="1">
+					<p:selectCheckboxMenu value="#{searchBean.selectedCollections}"
+						label="Collection" filter="true" style="width:100%" onchange="submit()">
+						<f:selectItems value="#{searchBean.collections}" />
+					</p:selectCheckboxMenu>
+
+
+					<p:selectCheckboxMenu value="#{searchBean.selectedLanguages}"
+						label="Language" filter="true" style="width:100%"  onchange="submit()">
+						<f:selectItems value="#{searchBean.languages}" />
+					</p:selectCheckboxMenu>
+
+					<p:selectCheckboxMenu
+						value="#{searchBean.selectedNationalProjects}"
+						label="National projects" filter="true" style="width:100%" onchange="submit()">
+						<f:selectItems value="#{searchBean.nationalProjects}" />
+					</p:selectCheckboxMenu>
+
+					<p:selectCheckboxMenu value="#{searchBean.selectedResourceTypes}"
+						label="Resource Type" filter="true" style="width:100%" onchange="submit()">
+						<f:selectItems value="#{searchBean.resourceTypes}" />
+					</p:selectCheckboxMenu>
+
+				</p:panelGrid>
+				</h:form>
+			</p:panel>
+
+		</p:layoutUnit>
+		<p:layoutUnit position="center">
+         <h:form id="form">
+				<p:dataGrid columns="1" var="record" value="#{searchBean.records}" layout="grid" rows="5"
+					paginator="true" rowsPerPageTemplate="5,10,15" style="width:80%">
+					<p:panel id="singleResult">
+						<p:commandLink update=":form:recordDetail"
+							oncomplete="PF('recordDialog').show()" title="View Detail">
+							<h:outputText value="#{record.name}" />
+							<f:setPropertyActionListener value="#{record}" target="#{searchBean.selectedRecord}" />
+						</p:commandLink>
+						<br />
+						<h:outputText value="#{record.shortDescription}" />
+					</p:panel>
+				</p:dataGrid>
+				<p:dialog header="Record Info" widgetVar="recordDialog" modal="false"
+					showEffect="fade" hideEffect="fade" resizable="true" width="60%">
+					<p:outputPanel id="recordDetail" style="text-align:center;">
+                  
+						<p:panelGrid columns="2" rendered="#{not empty searchBean.selectedRecord}">
+							<f:facet name="header">
+							  <h:outputText value="#{searchBean.selectedRecord.description}" />
+							</f:facet>
+
+                     <h:outputText value="Name:" />
+                     <h:outputText value="#{searchBean.selectedRecord.name}" />
+					      
+					      <h:outputText value="Collection: " />
+					      <h:outputText value="#{searchBean.selectedRecord.collection}" />
+
+                     <h:outputText value="Language:" />
+                     <h:outputText value="#{searchBean.selectedRecord.language}" />
+
+                     <h:outputText value="National Project: " />
+                     <h:outputText value="#{searchBean.selectedRecord.nationalProject}" />
+					
+						</p:panelGrid>
+
+					</p:outputPanel>
+				</p:dialog>
+			</h:form> 
+		</p:layoutUnit>
+	</p:layout>
+  
+</h:body>
+</html>
