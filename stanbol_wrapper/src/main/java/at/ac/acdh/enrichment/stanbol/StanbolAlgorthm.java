@@ -59,7 +59,7 @@ public class StanbolWrapper extends StandardLocalExternalAlgorithm {
 		// (the three properties will be read from specific fields inside the resource definition)
 		acceptType = "application/json";
 		contentType = "text/plain";
-		stanbolRestUrl = "http://enrich.acdh.oeaw.ac.at/enhancer";
+		stanbolRestUrl = "http://enrich.acdh.oeaw.ac.at/enhancer/chain/dbpedia-fst-linking";
 		
 		// This is the part in which the stanbol service is called and the response is saved into a file
 		// (the file will be available at the end of the computation inside a specific folder in the workspace)
