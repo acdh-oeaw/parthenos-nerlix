@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class StanbolWrapperTest {
 	
-	@Test
+	//@Test
 	public void deploymentTest() throws Exception{
 		System.out.println("Deployment Test Begin");
 		List<ComputationalAgent> kStatistics = TransducerersFactory.getTransducerers(deploymentTestConfiguration());
