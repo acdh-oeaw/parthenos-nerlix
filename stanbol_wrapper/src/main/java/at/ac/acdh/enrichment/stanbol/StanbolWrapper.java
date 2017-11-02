@@ -1,4 +1,4 @@
-package org.gcube.data.analysis.algorithms.stanbolwrapper;
+package at.ac.acdh.enrichment.stanbol;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -25,9 +25,25 @@ public class StanbolWrapper extends StandardLocalExternalAlgorithm {
 	/* Input parameters */
 
 	private String inputName = "input";
-	private String acceptType;
-	private String contentType;
-	private String stanbolRestUrl;
+
+	
+	private String enhancementChain;
+	private String outputFormat;
+	
+	private enum ENHANCEMENT_CHAINS{
+		COUNTRIES, 
+		CITIES, 
+		LOCATIONS,
+		DBPEDIA
+	}
+	
+	private enum OUTPUT_FORMATS{
+		JSON_LD,
+		RDF_XML,
+		RDF_JSON,
+		TURTLE,
+		N_TRIPLES
+	}
 	
 	/* output parameters */
 	
@@ -50,16 +66,51 @@ public class StanbolWrapper extends StandardLocalExternalAlgorithm {
 	@Override
 	protected void setInputParameters() {		
 		inputs.add(new PrimitiveType(File.class.getName(), null, PrimitiveTypes.FILE, inputName, "File containing the text to be enriched", "input_text") );
+		addEnumerateInput(ENHANCEMENT_CHAINS.values(), enhancementChain, "Available enhancement chains", ENHANCEMENT_CHAINS.DBPEDIA.name());
+		addEnumerateInput(OUTPUT_FORMATS.values(), outputFormat, "Output formats", OUTPUT_FORMATS.JSON_LD.name());
+		
 	}
 
 	@Override
 	protected void process() throws Exception {
 		
+		
 		// This properties acquisition part has to be changed once a service endpoint has been created
 		// (the three properties will be read from specific fields inside the resource definition)
-		acceptType = "application/json";
-		contentType = "text/plain";
-		stanbolRestUrl = "http://enrich.acdh.oeaw.ac.at/enhancer/chain/dbpedia-fst-linking";
+		String contentType = "text/plain";
+		String stanbolRestUrl = "http://enrich.acdh.oeaw.ac.at/enhancer/chain/";
+		String acceptType;
+		
+		switch(getInputParameter(enhancementChain)) {
+		case "COUNTRIES":
+			stanbolRestUrl += "geoNames_PCLI";
+			break;
+		case "CITIES":
+			stanbolRestUrl += "geoNames_PPLC";
+			break;
+		case "LOCATIONS":
+			stanbolRestUrl += "geoNames_SPAsubset";
+			break;
+		default: 
+			stanbolRestUrl += "dbpedia-fst-linking";
+		}
+		
+		switch(getInputParameter(outputFormat)) {
+		case "RDF_XML":
+			acceptType = "application/rdf+xml";
+			break;
+		case "RDF_JSON":
+			acceptType = "application/rdf+json";
+			break;
+		case "TURTLE":
+			acceptType = "text/turtle";
+			break;
+		case "N_TRIPLES":
+			acceptType = "text/rdf+nt";
+			break;
+		default:
+			acceptType = "application/json";
+		}
 		
 		// This is the part in which the stanbol service is called and the response is saved into a file
 		// (the file will be available at the end of the computation inside a specific folder in the workspace)

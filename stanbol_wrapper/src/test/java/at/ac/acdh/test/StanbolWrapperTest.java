@@ -1,4 +1,4 @@
-package org.gcube.data.analysis.algorithms.stanbolwrapper;
+package at.ac.acdh.test;
 
 import java.util.List;
 
