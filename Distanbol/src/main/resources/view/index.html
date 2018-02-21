@@ -5,15 +5,15 @@
     <title>Distanbol</title>
 </head>
 <body>
-<form method="post" enctype="multipart/form-data" action="/Distanbol/convert">
-    <div>
-        <label for="file">Choose a Stanbol output json-ld file to upload:</label>
-        <input type="file" id="file" name="file" multiple>
-    </div>
-    <div>
-        <button>Submit</button>
-    </div>
-</form>
+
+<div>
+    Put your Stanbol json output URL as a query:
+    <pre><code>http://distanbol.oeaw.ac.at?URL={URL of your Stanbol output in json}</code></pre>
+    <br>
+    Example:
+    <pre><code>http://distanbol.oeaw.ac.at?URL=http://distanbol.oeaw.ac.at/example/example.json</code></pre>
+
+</div>
 
 </body>
 </html>

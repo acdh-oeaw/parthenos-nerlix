@@ -1,6 +1,7 @@
 package at.ac.oeaw.routes;
 
 import at.ac.oeaw.Viewable.Viewable;
+import at.ac.oeaw.helpers.FileReader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -28,16 +29,23 @@ public class Distanbol {
 
     @GET
     @Path("/")
-    public Response getIndex() {
-        try {
-            String html = readFile("/WEB-INF/classes/view/index.html");
+    public Response convert(@QueryParam("URL") String URL){
 
-            return Response.accepted().entity(html).type("text/html").build();
-        } catch (IOException e) {
-            System.err.println("Cant read index html file");
-            e.printStackTrace();
-            return Response.serverError().build();
+        if(URL==null){//return index page, which explains how it works
+            try {
+                String html = FileReader.readFile(servletContext.getRealPath("/WEB-INF/classes/view/index.html"));
+
+                return Response.accepted().entity(html).type("text/html").build();
+            } catch (IOException e) {
+                System.err.println("Cant read index html file");
+                e.printStackTrace();
+                return Response.serverError().build();
+            }
         }
+
+        //TODO
+        //client request get response check if json, then do whats under convert
+        return Response.accepted().entity("URL received "+URL).build();
     }
 
     @POST
@@ -61,7 +69,7 @@ public class Distanbol {
 //            String json = readFile("/WEB-INF/classes/example.json");//TODO read input instead of example
 
 
-            String html = readFile("/WEB-INF/classes/view/view.html");
+            String html = FileReader.readFile(servletContext.getRealPath("/WEB-INF/classes/view/view.html"));
             Document doc = Jsoup.parse(html);
 
 
@@ -203,21 +211,5 @@ public class Distanbol {
 
     }
 
-    private String readFile(String filePath) throws IOException {
-        InputStream is = new FileInputStream(servletContext.getRealPath(filePath));
-        BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 
-        String line = buf.readLine();
-        StringBuilder sb = new StringBuilder();
-
-        while (line != null) {
-            sb.append(line).append("\n");
-            line = buf.readLine();
-        }
-
-        String file = sb.toString();
-
-
-        return file;
-    }
 }
