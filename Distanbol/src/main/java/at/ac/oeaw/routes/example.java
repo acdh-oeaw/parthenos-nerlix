@@ -1,6 +1,7 @@
 package at.ac.oeaw.routes;
 
 import at.ac.oeaw.helpers.FileReader;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
@@ -13,6 +14,8 @@ import java.io.IOException;
 
 @Path("/example")
 public class example {
+
+    final static Logger logger = Logger.getLogger(example.class);
 
     @Context
     ServletContext servletContext;
@@ -27,7 +30,7 @@ public class example {
 
             return Response.accepted().entity(html).type("application/json").build();
         } catch (IOException e) {
-            System.err.println("Cant read example file, no such file probably");
+            logger.error("Can't read example file, no such file probably");
             return Response.status(404).entity("{\"error\":\"There is no such file with the name: "+exampleName+".json.\"}").build();
         }
 

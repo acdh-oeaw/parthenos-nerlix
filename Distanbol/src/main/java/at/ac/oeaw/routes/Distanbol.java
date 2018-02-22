@@ -4,19 +4,24 @@ import at.ac.oeaw.Viewable.Viewable;
 import at.ac.oeaw.helpers.FileReader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.apache.commons.validator.routines.UrlValidator;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -24,50 +29,53 @@ import java.util.Iterator;
 @Path("/")
 public class Distanbol {
 
+    final static Logger logger = Logger.getLogger(Distanbol.class);
+
     @Context
     ServletContext servletContext;
 
     @GET
     @Path("/")
-    public Response convert(@QueryParam("URL") String URL){
+    public Response convert(@QueryParam("URL") String URL) {
 
-        if(URL==null){//return index page, which explains how it works
+        if (URL == null) {//return index page, which explains how it works
             try {
                 String html = FileReader.readFile(servletContext.getRealPath("/WEB-INF/classes/view/index.html"));
-
-                return Response.accepted().entity(html).type("text/html").build();
+                return Response.status(200).entity(html).type("text/html").build();
             } catch (IOException e) {
-                System.err.println("Cant read index html file");
                 e.printStackTrace();
+                logger.error("Can't read index html file");
                 return Response.serverError().build();
             }
         }
 
-        //TODO
-        //client request get response check if json, then do whats under convert
-        return Response.accepted().entity("URL received "+URL).build();
-    }
 
-    @POST
-    @Path("/convert")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public Response convert(@FormDataParam("file") InputStream inputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
-        String json = "";
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            json = sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Response.serverError().entity("Can't read input json file").build();
+        String[] schemes = {"http", "https"}; // DEFAULT schemes = "http", "https", "ftp"
+        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_LOCAL_URLS);
+
+        String input = URL;
+        if (!URL.startsWith("http://") && !URL.startsWith("https://")) {
+            URL = "http://" + URL;
         }
 
-        try {
-//            String json = readFile("/WEB-INF/classes/example.json");//TODO read input instead of example
+        if (!urlValidator.isValid(URL)) {
+            return Response.status(400).entity("The given URL: '" + input + "' is not valid.").build();
+        }
 
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target(URL);
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.get();
+
+        String contentType = response.getHeaderString("Content-Type");
+        if(!contentType.equals("application/json") && !contentType.equals("application/ld+json")){
+            return Response.status(400).entity("The given URL: '" + input + "' doesn't point to a json or jsonld file.").build();
+        }
+
+        String json = response.readEntity(String.class);
+
+        try {
 
             String html = FileReader.readFile(servletContext.getRealPath("/WEB-INF/classes/view/view.html"));
             Document doc = Jsoup.parse(html);
@@ -78,7 +86,6 @@ public class Distanbol {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(json);
             JsonNode graph = jsonNode.get("@graph");
-//null check todo
 
             if (graph == null) {
                 return Response.status(400).entity("The provided json-ld is not in a known Stanbol output format. Make sure that it has the '@graph' element.").build();
@@ -91,7 +98,7 @@ public class Distanbol {
                 Element script = doc.getElementById("script");
 
                 while (iterator.hasNext()) {
-                    JsonNode item = iterator.next();
+                    JsonNode item = iterator.next();//todo somewhere here for the depictions check if exists then choose one or display both i dont know
 
                     Viewable viewable = createViewableFromItem(item);
 
@@ -131,15 +138,12 @@ public class Distanbol {
                         }
 
                         if (viewable.getLatitude() != null && !viewable.getLatitude().equals("") && viewable.getLongitude() != null && !viewable.getLongitude().equals("")) {
-                            script.appendText("addMarker("+viewable.getLongitude()+","+viewable.getLatitude()+");");
+                            script.appendText("addMarker(" + viewable.getLongitude() + "," + viewable.getLatitude() + ");");
                         }
 
 
                         viewablesHTML.append("<hr>");
 
-
-//                    System.out.println(viewable.toString());
-//                    System.out.println(doc.html());
                     }
 
 
@@ -147,21 +151,20 @@ public class Distanbol {
                 viewablesHTML.children().last().remove();
             }
 
-
             return Response.accepted().entity(doc.html()).type("text/html").build();
-//            return Response.accepted().entity(json).type("application/json").build();
+
         } catch (IOException e) {
-            e.printStackTrace();
-            return Response.serverError().entity("Cant read input json file").build();
+            logger.error("Can't read input json file: "+e.getMessage());
+            return Response.serverError().entity("Can't read input json file").build();
         }
 
-
     }
+
 
     private Viewable createViewableFromItem(JsonNode item) {
         String id = item.get("@id").asText();
 
-        ArrayList<String> types = new ArrayList<String>();
+        ArrayList<String> types = new ArrayList<>();
         JsonNode typeArray = item.get("@type");
         if (typeArray != null && typeArray.isArray()) {
             Iterator<JsonNode> iterator = typeArray.elements();
@@ -175,19 +178,19 @@ public class Distanbol {
         String depiction = item.get("foaf:depiction") == null ? null : item.get("foaf:depiction").get(0).asText();
 
         String longitude = null;
-        if(item.get("geo:long") != null){
-            if(item.get("geo:long").isArray()){
+        if (item.get("geo:long") != null) {
+            if (item.get("geo:long").isArray()) {
                 longitude = item.get("geo:long").get(0).asText();
-            }else{
+            } else {
                 longitude = item.get("geo:long").asText();
             }
         }
 
         String latitude = null;
-        if(item.get("geo:lat") != null){
-            if(item.get("geo:lat").isArray()){
+        if (item.get("geo:lat") != null) {
+            if (item.get("geo:lat").isArray()) {
                 latitude = item.get("geo:lat").get(0).asText();
-            }else{
+            } else {
                 latitude = item.get("geo:lat").asText();
             }
         }
