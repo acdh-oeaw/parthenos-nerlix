@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.client.ClientProperties;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -51,7 +52,7 @@ public class Distanbol {
 
 
         String[] schemes = {"http", "https"}; // DEFAULT schemes = "http", "https", "ftp"
-        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_LOCAL_URLS);
+        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_LOCAL_URLS);//allow local for testing
 
         String input = URL;
         if (!URL.startsWith("http://") && !URL.startsWith("https://")) {
@@ -67,6 +68,20 @@ public class Distanbol {
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
+
+        if(response.getStatus() == 302){
+            URL = response.getHeaderString("Location");
+            if (!urlValidator.isValid(URL)) {
+                return Response.status(400).entity("The given URL: '" + input + "' is not valid.").build();
+            }
+            webTarget = client.target(URL);
+
+            invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+            response = invocationBuilder.get();
+        }
+        if(response.getStatus() == 302){
+            return Response.status(400).entity("Distanbol only allows one redirect when accessing the given URL input").build();
+        }
 
         String contentType = response.getHeaderString("Content-Type");
         if(!contentType.equals("application/json") && !contentType.equals("application/ld+json")){
@@ -92,6 +107,10 @@ public class Distanbol {
             }
             if (graph.isArray()) {
                 Iterator<JsonNode> iterator = graph.elements();
+
+                Element rawJsonHTML = doc.getElementById("rawJson");
+
+                rawJsonHTML.appendText("Stanbol JSON input: <a href=\""+URL+"\">"+URL+"</a>");
 
                 Element viewablesHTML = doc.getElementById("viewables");
 
