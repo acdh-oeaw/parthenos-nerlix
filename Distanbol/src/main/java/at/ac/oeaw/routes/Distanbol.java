@@ -50,7 +50,7 @@ public class Distanbol {
             }
         }
 
-
+        //validate input
         String[] schemes = {"http", "https"}; // DEFAULT schemes = "http", "https", "ftp"
         UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_LOCAL_URLS);//allow local for testing
 
@@ -63,12 +63,15 @@ public class Distanbol {
             return Response.status(400).entity("The given URL: '" + input + "' is not valid.").build();
         }
 
+
+        //send request
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(URL);
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.get();
 
+        //validate redirect if any then send request to redirected
         if(response.getStatus() == 302){
             URL = response.getHeaderString("Location");
             if (!urlValidator.isValid(URL)) {
@@ -79,19 +82,23 @@ public class Distanbol {
             invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             response = invocationBuilder.get();
         }
+
+        //disallow more redirects
         if(response.getStatus() == 302){
             return Response.status(400).entity("Distanbol only allows one redirect when accessing the given URL input").build();
         }
 
+        //validate response body
         String contentType = response.getHeaderString("Content-Type");
         if(!contentType.equals("application/json") && !contentType.equals("application/ld+json")){
             return Response.status(400).entity("The given URL: '" + input + "' doesn't point to a json or jsonld file.").build();
         }
 
+        //read response body
         String json = response.readEntity(String.class);
 
+        //create html from json
         try {
-
             String html = FileReader.readFile(servletContext.getRealPath("/WEB-INF/classes/view/view.html"));
             Document doc = Jsoup.parse(html);
 
@@ -110,7 +117,7 @@ public class Distanbol {
 
                 Element rawJsonHTML = doc.getElementById("rawJson");
 
-                rawJsonHTML.appendText("Stanbol JSON input: <a href=\""+URL+"\">"+URL+"</a>");
+                rawJsonHTML.append("Stanbol JSON input: <a href=\""+URL+"\">"+URL+"</a>");
 
                 Element viewablesHTML = doc.getElementById("viewables");
 
