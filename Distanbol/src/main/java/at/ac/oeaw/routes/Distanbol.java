@@ -63,7 +63,7 @@ public class Distanbol {
         if (!urlValidator.isValid(URL)) {
             return Response.status(400).entity("The given URL: '" + input + "' is not valid.").build();
         }
-        
+
         //send request
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(URL);
