@@ -31,7 +31,7 @@ public class SAIStanbolWrapper {
 			Path inFile = Paths.get(args[0]);
 ;
 			String contentType = "text/plain";
-			String stanbolURLString = "http://enrich.acdh.oeaw.ac.at/enhancer/chain/";
+			String stanbolURLString = "https://enrich.acdh.oeaw.ac.at/enhancer/chain/";
 			String acceptType;
 			
 			
@@ -77,14 +77,17 @@ public class SAIStanbolWrapper {
 			stanbolCon.setUseCaches(false);
 			stanbolCon.setDoOutput(true); 
 			
-			byte[] buffer = new byte[1024];
+			byte[] buffer = new byte[1000000];
+			
 			int bytesRead;
 			
 			OutputStream stanbolOut = stanbolCon.getOutputStream();
 			InputStream fileIn = Files.newInputStream(inFile, StandardOpenOption.READ);
 			
+			
 			while((bytesRead = fileIn.read(buffer))>0) {
-				stanbolOut.write(buffer, 0, bytesRead);
+
+			    stanbolOut.write(buffer, 0, bytesRead);
 			}
 			
 			stanbolOut.flush();
@@ -96,6 +99,25 @@ public class SAIStanbolWrapper {
 			Path outPath = Paths.get("stanbolOut.txt");
 			
 			OutputStream fileOut = Files.newOutputStream(outPath, StandardOpenOption.CREATE); 
+			
+			if(acceptType.equals("application/json")) {  //adding the input-text to the json output
+			
+    			fileIn = Files.newInputStream(inFile, StandardOpenOption.READ);
+    			
+
+    			
+    			fileOut.write("{\"fulltext\":\"".getBytes());
+    	         while((bytesRead = fileIn.read(buffer)) > 0){
+                    fileOut.write(toJSON(buffer, bytesRead));
+                }
+    	        if((bytesRead = stanbolIn.read(buffer)) > 1) {
+    	            fileOut.write(buffer, 1, bytesRead -1);
+    	        }
+    	        
+    	        fileOut.write("\",".getBytes());
+    	        
+    	        fileIn.close();
+			}
 			
 			while((bytesRead = stanbolIn.read(buffer)) > 0){
 				fileOut.write(buffer, 0, bytesRead);
@@ -123,6 +145,18 @@ public class SAIStanbolWrapper {
 		}
 		
 
+	}
+	
+	private static byte[] toJSON(byte[] text, int bytesRead) {
+	    return new String(text, 0, bytesRead)
+	    .replaceAll("\b", "\\b")
+	    .replaceAll("\f", "\\f")
+	    .replaceAll("\n", "\\n")
+	    .replaceAll("\r", "\\r")
+	    .replaceAll("\t", "\\t")
+	    .replaceAll("\"", "\\\"")
+	    .replaceAll("\\\\", "\\\\") // looks strange but the first is a regular expression, the second a string
+	    .getBytes();
 	}
 
 }
