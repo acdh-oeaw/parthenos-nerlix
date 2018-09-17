@@ -152,13 +152,13 @@ public class SAIStanbolWrapper {
 	
 	private static byte[] toJSON(byte[] text, int bytesRead) {
 	    return new String(text, 0, bytesRead)
-	    .replaceAll("\b", "\\b")
-	    .replaceAll("\f", "\\f")
-	    .replaceAll("\n", "\\n")
-	    .replaceAll("\r", "\\r")
-	    .replaceAll("\t", "\\t")
-	    .replaceAll("\"", "\\\"")
-	    .replaceAll("\\\\", "\\\\") // looks strange but the first is a regular expression, the second a string
+        .replace("\\", "\\\\") 
+	    .replace("\b", "\\b")
+	    .replace("\f", "\\f")
+	    .replace("\n", "\\n")
+	    .replace("\r", "\\r")
+	    .replace("\t", "\\t")
+	    .replace("\"", "\\\"")
 	    .getBytes();
 	}
 
