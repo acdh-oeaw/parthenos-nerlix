@@ -105,18 +105,21 @@ public class SAIStanbolWrapper {
     			fileIn = Files.newInputStream(inFile, StandardOpenOption.READ);
     			
 
-    			
-    			fileOut.write("{\"fulltext\":\"".getBytes());
+    			//adding text as json
+    			fileOut.write("[{\"fulltext\":\"".getBytes());
     	         while((bytesRead = fileIn.read(buffer)) > 0){
                     fileOut.write(toJSON(buffer, bytesRead));
                 }
+                fileOut.write("\"},\n".getBytes());
+                 
+                fileIn.close(); 
+    	        
+                //reading from stanbol while replacing the opening bracket '[' 
     	        if((bytesRead = stanbolIn.read(buffer)) > 1) {
     	            fileOut.write(buffer, 1, bytesRead -1);
     	        }
     	        
-    	        fileOut.write("\",".getBytes());
     	        
-    	        fileIn.close();
 			}
 			
 			while((bytesRead = stanbolIn.read(buffer)) > 0){
