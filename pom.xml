@@ -7,7 +7,7 @@
   <modules>
   	<module>discovery-portlet</module>
   	<module>stanbol_wrapper</module>
-  	<module>sai_stanbol_wrapper</module>
-    <module>Distanbol</module>
+  	
+    
   </modules>
 </project>
